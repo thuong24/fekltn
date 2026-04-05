@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #020617;
+    --text-mutted: #475569;
+    --accent-color: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-light: #818cf8;
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: #e2e8f0;
+    --glass-card: #ffffff;
+    --glass-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --input-bg: #f8fafc;
+    --sidebar-bg: #ffffff;
+    --topbar-bg: rgba(255, 255, 255, 0.9);
+    --badge-success-bg: rgba(16, 185, 129, 0.1);
+    --badge-success-text: #059669;
+    --badge-warning-bg: rgba(245, 158, 11, 0.1);
+    --badge-warning-text: #b45309;
+    --badge-danger-bg: rgba(239, 68, 68, 0.1);
+    --badge-danger-text: #b91c1c;
+    --badge-primary-bg: rgba(99, 102, 241, 0.1);
+    --badge-primary-text: #4338ca;
+  }
+
+  .dark {
+    --bg-color: #020617;
+    --text-color: #f8fafc;
+    --text-mutted: #94a3b8;
+    --accent-color: #6366f1;
+    --accent-hover: #818cf8;
+    --accent-light: #a5b4fc;
+    --glass-bg: rgba(15, 23, 42, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-card: rgba(30, 41, 59, 0.6);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --input-bg: rgba(15, 23, 42, 0.5);
+    --sidebar-bg: #020617;
+    --topbar-bg: rgba(2, 6, 23, 0.8);
+    --badge-success-bg: rgba(16, 185, 129, 0.2);
+    --badge-success-text: #34d399;
+    --badge-warning-bg: rgba(245, 158, 11, 0.2);
+    --badge-warning-text: #fbbf24;
+    --badge-danger-bg: rgba(239, 68, 68, 0.2);
+    --badge-danger-text: #f87171;
+    --badge-primary-bg: rgba(99, 102, 241, 0.2);
+    --badge-primary-text: #818cf8;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-inter), var(--font-be-vietnam-pro), sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: all 0.3s ease; /* Chuyển động mượt hơn cho mọi thuộc tính */
+    background-image: radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.1), transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.1), transparent 25%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Utilities */
+  .glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 1rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .glass-card {
+    background: var(--glass-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+
+  /* Form Elements */
+  .glass-input, .input-field {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    border-radius: 0.5rem;
+    padding: 0.7rem 1rem;
+    transition: all 0.2s ease;
+    outline: none;
+    font-size: 0.875rem;
+  }
+
+  .glass-input:focus, .input-field:focus {
+    border-color: var(--accent-color);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .dark .glass-input:focus, .dark .input-field:focus {
+    background: #0f172a;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--text-color);
+    font-weight: 500;
+    border-radius: 0.5rem;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    background: var(--glass-border);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 9999px;
+  }
+
+  .badge-success { background: var(--badge-success-bg); color: var(--badge-success-text); border: 1px solid var(--badge-success-bg); }
+  .badge-warning { background: var(--badge-warning-bg); color: var(--badge-warning-text); border: 1px solid var(--badge-warning-bg); }
+  .badge-danger { background: var(--badge-danger-bg); color: var(--badge-danger-text); border: 1px solid var(--badge-danger-bg); }
+  .badge-primary { background: var(--badge-primary-bg); color: var(--badge-primary-text); border: 1px solid var(--badge-primary-bg); }
+
+  /* Navigation Items */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-mutted);
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .nav-item:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--text-color);
+    border-left-color: rgba(99, 102, 241, 0.5);
+  }
+
+  .nav-item.active {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--accent-color);
+    border-left-color: var(--accent-color);
+  }
+}
+
+@layer utilities {
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
