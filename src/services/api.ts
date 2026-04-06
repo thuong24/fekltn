@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AuthState } from '../types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://160.187.229.180:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://avis-recidivous-paraphrastically.ngrok-free.dev/api';
 
 const api = axios.create({
   baseURL: API_URL,

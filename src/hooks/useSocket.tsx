@@ -17,7 +17,7 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://160.187.229.180:5000';
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://avis-recidivous-paraphrastically.ngrok-free.dev';
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { accessToken, user } = useAuth();
