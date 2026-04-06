@@ -21,20 +21,29 @@ export default function TBMQuota() {
 
   const [newPeriod, setNewPeriod] = useState({ dot: '', startReg: '', endReg: '', loaiDetai: 'BCTT', major: '' });
 
+  // Lecturer Field Form state
+  const [lecturerFields, setLecturerFields] = useState<any[]>([]);
+  const [fieldMajor, setFieldMajor] = useState('');
+  const [fieldLecturerId, setFieldLecturerId] = useState('');
+  const [fieldText, setFieldText] = useState('');
+
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const [qRes, lRes, pRes] = await Promise.all([
+      const [qRes, lRes, pRes, fRes] = await Promise.all([
         api.get('/tbm/quota'),
         api.get('/student/lecturers'),
-        api.get('/student/periods')
+        api.get('/student/periods'),
+        api.get('/tbm/lecturers/fields')
       ]);
       setQuotas(qRes.data.data);
-      setLecturers(lRes.data.data);
+      setLecturers(fRes.data.data.lecturers); // Dùng danh sách GV chuyên biệt cho TBM (đã lọc theo major & sort)
       setPeriods(pRes.data.data);
+      setLecturerFields(fRes.data.data.lecturerFields);
     } catch (error) {
       console.error('Failed to fetch data', error);
     } finally {
@@ -86,6 +95,37 @@ export default function TBMQuota() {
       toast.success(approved ? 'Đã duyệt quota' : 'Đã hủy duyệt quota');
     } catch (error) {
       toast.error('Lỗi khi duyệt quota');
+    }
+  };
+
+  const handleAddField = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fieldLecturerId || !fieldMajor || !fieldText) {
+      toast.error('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+    try {
+      await api.post('/tbm/lecturers/fields', {
+        lecturerId: fieldLecturerId,
+        major: fieldMajor,
+        field: fieldText
+      });
+      setFieldText('');
+      fetchData();
+      toast.success('Đã thêm chuyên môn!');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Lỗi khi thêm chuyên môn');
+    }
+  };
+
+  const handleDeleteField = async (id: number) => {
+    if (!confirm('Bạn có chắc chắn muốn xóa chuyên môn này?')) return;
+    try {
+      await api.delete(`/tbm/lecturers/fields/${id}`);
+      fetchData();
+      toast.success('Đã xóa chuyên môn');
+    } catch (error) {
+      toast.error('Lỗi khi xóa chuyên môn');
     }
   };
 
@@ -201,7 +241,88 @@ export default function TBMQuota() {
         </div>
       </div>
 
-      {/* List Section */}
+      {/* Lecturer Fields Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Form Add Field */}
+        <div className="glass-panel p-8 border border-amber-500/20 shadow-xl shadow-amber-500/5">
+          <h3 className="text-xl font-bold mb-6 text-amber-500 flex items-center gap-2">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" strokeWidth={2} /></svg>
+            Đăng Ký Chuyên Môn GV
+          </h3>
+          <form onSubmit={handleAddField} className="space-y-5">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-[var(--text-mutted)] uppercase">Giảng viên</label>
+              <select value={fieldLecturerId} onChange={(e) => setFieldLecturerId(e.target.value)} className="w-full input-field text-sm" required>
+                <option value="">-- Chọn giảng viên --</option>
+                {lecturers.map(l => (
+                  <option key={l.id} value={l.id}>
+                    {l.isRegistered ? '✓ ' : '○ '}
+                    {l.name || 'Chưa đặt tên'} ({l.email})
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-[var(--text-mutted)] uppercase">Chuyên ngành</label>
+              <select value={fieldMajor} onChange={e => setFieldMajor(e.target.value)} className="w-full input-field text-sm" required>
+                <option value="">-- Chọn chuyên ngành --</option>
+                <option value="QLCN">Quản lý Công nghiệp (QLCN)</option>
+                <option value="ECom">Thương mại Điện tử (ECom)</option>
+                <option value="Log">Logistics (Log)</option>
+                <option value="KHQT">Kinh doanh Quốc tế (IntBus)</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-[var(--text-mutted)] uppercase">Lĩnh vực chuyên sâu</label>
+              <input value={fieldText} onChange={e => setFieldText(e.target.value)} placeholder="VD: Chuỗi cung ứng, AI, Marketing..." className="w-full input-field text-sm" required />
+            </div>
+
+            <button type="submit" className="btn-primary w-full py-3 bg-amber-600 border-none shadow-amber-500/20 shadow-xl font-bold">Thêm chuyên môn</button>
+          </form>
+        </div>
+
+        {/* List Fields */}
+        <div className="lg:col-span-2 glass-panel overflow-hidden border border-[var(--glass-border)] shadow-2xl">
+          <div className="p-4 bg-black/5 dark:bg-white/5 border-b border-[var(--glass-border)]">
+            <h4 className="font-bold text-amber-600 text-xs uppercase tracking-widest">Danh mục chuyên môn hiện có</h4>
+          </div>
+          <div className="overflow-x-auto max-h-[400px]">
+             <table className="w-full text-left">
+                <thead className="text-[10px] uppercase font-bold text-[var(--text-mutted)] bg-black/5">
+                  <tr>
+                    <th className="px-4 py-3">Giảng viên</th>
+                    <th className="px-4 py-3">Ngành</th>
+                    <th className="px-4 py-3">Lĩnh vực</th>
+                    <th className="px-4 py-3 text-right">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--glass-border)]">
+                  {lecturerFields.map(f => (
+                    <tr key={f.id} className="hover:bg-amber-500/5 transition-colors group">
+                      <td className="px-4 py-3">
+                        <p className="text-xs font-bold">{f.lecturer.name}</p>
+                        <p className="text-[9px] text-[var(--text-mutted)]">{f.lecturer.email}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-[10px] font-black text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{f.major}</span>
+                      </td>
+                      <td className="px-4 py-3 text-xs">{f.field}</td>
+                      <td className="px-4 py-3 text-right">
+                        <button onClick={() => handleDeleteField(f.id)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-500/10 rounded transition-all opacity-0 group-hover:opacity-100">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" strokeWidth={2} /></svg>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {lecturerFields.length === 0 && <tr><td colSpan={4} className="px-4 py-10 text-center text-xs text-[var(--text-mutted)] italic">Chưa có chuyên môn nào được đăng ký.</td></tr>}
+                </tbody>
+             </table>
+          </div>
+        </div>
+      </div>
+
       <div className="glass-panel overflow-hidden border border-[var(--glass-border)] shadow-2xl">
         <div className="p-6 bg-black/5 dark:bg-white/5 border-b border-[var(--glass-border)] flex justify-between items-center">
           <h4 className="font-bold text-[var(--text-color)] uppercase tracking-widest text-xs">Danh sách Quota đã cấp</h4>
