@@ -30,8 +30,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     if (!accessToken || !user) return;
 
     const socketInstance = io(SOCKET_URL, {
-      auth: { token: accessToken },
-    });
+    auth: { token: accessToken },
+    extraHeaders: {
+      "ngrok-skip-browser-warning": "true"
+    }
+  });
 
     socketInstance.on('connect', () => setIsConnected(true));
     socketInstance.on('disconnect', () => setIsConnected(false));

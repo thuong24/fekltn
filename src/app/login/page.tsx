@@ -54,7 +54,7 @@ export default function Login() {
               type="email"
               required
               className="glass-input"
-              placeholder="VD: 323553@student.hcmute.edu.vn"
+              placeholder="Nhập email..."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
