@@ -17,7 +17,7 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://values-combines-glance-hourly.trycloudflare.com';
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { accessToken, user } = useAuth();
