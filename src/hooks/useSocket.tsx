@@ -17,7 +17,7 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://avis-recidivous-paraphrastically.ngrok-free.dev';
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://values-combines-glance-hourly.trycloudflare.com';
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { accessToken, user } = useAuth();
@@ -30,11 +30,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     if (!accessToken || !user) return;
 
     const socketInstance = io(SOCKET_URL, {
-    auth: { token: accessToken },
-    extraHeaders: {
-      "ngrok-skip-browser-warning": "true"
-    }
-  });
+      auth: { token: accessToken },
+    });
 
     socketInstance.on('connect', () => setIsConnected(true));
     socketInstance.on('disconnect', () => setIsConnected(false));
