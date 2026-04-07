@@ -93,9 +93,10 @@ export default function LecturerTopics() {
                  <select value={formData.major} onChange={e => setFormData({...formData, major: e.target.value})} className="input-field">
                    <option value="">-- Chọn chuyên ngành --</option>
                    <option value="QLCN">Quản lý Công nghiệp (QLCN)</option>
-                   <option value="ECom">Thương mại Điện tử (ECom)</option>
+                   <option value="TMĐT">Thương mại Điện tử (ECom)</option>
                    <option value="Log">Logistics (Log)</option>
-                   <option value="KHQT">Kinh doanh Quốc tế (IntBus)</option>
+                   <option value="KDQT">Kinh doanh Quốc tế (IntBus)</option>
+                   <option value="Ktoan">Kế toán (Acc)</option>
                  </select>
                </div>
                <div>

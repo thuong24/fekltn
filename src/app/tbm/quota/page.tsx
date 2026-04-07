@@ -167,9 +167,10 @@ export default function TBMQuota() {
               <select value={newPeriod.major} onChange={e => setNewPeriod({ ...newPeriod, major: e.target.value })} className="input-field w-full text-sm" required>
                 <option value="">-- Chọn chuyên ngành --</option>
                 <option value="QLCN">Quản lý Công nghiệp (QLCN)</option>
-                <option value="ECom">Thương mại Điện tử (ECom)</option>
+                <option value="TMĐT">Thương mại Điện tử (ECom)</option>
                 <option value="Log">Logistics (Log)</option>
-                <option value="KHQT">Kinh doanh Quốc tế (IntBus)</option>
+                <option value="KDQT">Kinh doanh Quốc tế (IntBus)</option>
+                <option value="Ktoan">Kế toán (Acc)</option>
               </select>
             </div>
 
@@ -224,9 +225,10 @@ export default function TBMQuota() {
                 <select value={quotaMajor} onChange={e => setQuotaMajor(e.target.value)} className="w-full input-field text-sm" required>
                   <option value="">-- Chọn chuyên ngành --</option>
                   <option value="QLCN">Quản lý Công nghiệp (QLCN)</option>
-                  <option value="ECom">Thương mại Điện tử (ECom)</option>
+                  <option value="TMĐT">Thương mại Điện tử (ECom)</option>
                   <option value="Log">Logistics (Log)</option>
-                  <option value="KHQT">Kinh doanh Quốc tế (IntBus)</option>
+                  <option value="KDQT">Kinh doanh Quốc tế (IntBus)</option>
+                  <option value="Ktoan">Kế toán (Acc)</option>
                 </select>
               </div>
             </div>
@@ -268,9 +270,10 @@ export default function TBMQuota() {
               <select value={fieldMajor} onChange={e => setFieldMajor(e.target.value)} className="w-full input-field text-sm" required>
                 <option value="">-- Chọn chuyên ngành --</option>
                 <option value="QLCN">Quản lý Công nghiệp (QLCN)</option>
-                <option value="ECom">Thương mại Điện tử (ECom)</option>
+                <option value="TMĐT">Thương mại Điện tử (ECom)</option>
                 <option value="Log">Logistics (Log)</option>
-                <option value="KHQT">Kinh doanh Quốc tế (IntBus)</option>
+                <option value="KDQT">Kinh doanh Quốc tế (IntBus)</option>
+                <option value="Ktoan">Kế toán (Acc)</option>
               </select>
             </div>
 
